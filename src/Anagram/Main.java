@@ -8,26 +8,43 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    //Main method
     public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);//Needed for user input
 
+        System.out.println("Note: This program requires an internet connection");
+
+        //Getting user input
         System.out.println("What is the word you are looking an anagram for?");
         String word = in.next();
 
+        //Create a list of possible permutations of the word and a list for real anagrams
         ArrayList<String> perms = printPermutn(word, "", new ArrayList<String>());
         ArrayList<String> anagrams = new ArrayList<>();
+
+        //Noting that the internet will be needed for checking for anagrams
+        System.out.println("\nConnecting to internet ...");
+
+        //Go through all permutations and check which are valid words. Add those to anagrams
         for (String x : perms){
             if(checkWord(x))
                 anagrams.add(x);
         }
 
-        for(String x : anagrams){
-            System.out.println(x);
+        anagrams.remove(word);//Remove the original word form anagram list
+
+        //Print out all the anagrams, if there are any
+        if (anagrams.size() != 0) {
+            System.out.println("\nAnagrams: ");
+            for (String x : anagrams) {
+                System.out.println(x);
+            }
         }
     }
 
-    static ArrayList<String> printPermutn(String str, String ans, ArrayList curr)
+    private static ArrayList<String> printPermutn(String str, String ans, ArrayList curr)
     {
         if (str.length() == 0){
             curr.add(ans);
@@ -62,6 +79,7 @@ public class Main {
         } catch (FileNotFoundException e){
             return false;
         } catch (IOException e){
+            System.out.println("Internet not connected. ERROR!");
             return false;
         }
         return true;
