@@ -64,14 +64,11 @@ public class Main {
     }
 
     private static boolean checkWord(String word){
-        String curr = "";
         try {
             URL url = new URL("https://api.dictionaryapi.dev/api/v2/entries/en/"+word);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             InputStream inputStream = new BufferedInputStream(connection.getInputStream());
-
-            curr = convertResultToString(inputStream);
         } catch (MalformedURLException e) {
             return false;
         } catch(ProtocolException e){
@@ -83,30 +80,5 @@ public class Main {
             return false;
         }
         return true;
-    }
-
-    private static String convertResultToString(InputStream inputStream) {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder stringBuilder = new StringBuilder();
-
-        String curr = "";
-
-        while(true){
-            try {
-                if(!((curr = bufferedReader.readLine()) != null)){
-                    stringBuilder.append('\n');
-                }
-                stringBuilder.append(curr);
-            } catch (IOException e){
-                e.printStackTrace();
-            } finally {
-                try {
-                    inputStream.close();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-            return stringBuilder.toString();
-        }
     }
 }
